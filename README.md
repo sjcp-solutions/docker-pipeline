@@ -7,6 +7,7 @@ Once the image has been developed it will be released to github and docker hub.
 
 ### Gitlab General Settings
 * Merge Requests: *Fast-forward merge*
+* Only allow merge requests to be merged if the pipeline succeeds
 
 ### Gitlab Repository Settings
 #### Push Rule

@@ -1,0 +1,26 @@
+# Use Steven Cooney's git image which simple installs git in
+# addition to the latest docker image. Ideal for these types of builds.
+image: stevencooney/docker-git:latest
+
+# Since we building docker images within a docker container we need the
+# docker in docker service.
+services:
+  - docker:dind
+
+variables:
+  COMMIT_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH:$CI_COMMIT_SHA
+
+stages:
+  - build
+
+# Log in to Gitlab's docker registry
+before_script:
+  - docker info
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+# Build our docker image and push to Gitlab's registry
+build:
+  stage: build
+  script:
+    - docker build --pull -t $COMMIT_IMAGE .
+    - docker push $COMMIT_IMAGE
