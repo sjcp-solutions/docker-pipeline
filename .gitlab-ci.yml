@@ -12,6 +12,7 @@ variables:
 
 stages:
   - build
+  - test
 
 # Log in to Gitlab's docker registry
 before_script:
@@ -24,3 +25,10 @@ build:
   script:
     - docker build --pull -t $COMMIT_IMAGE .
     - docker push $COMMIT_IMAGE
+
+# Test our docker image and verify that the container runs and anything supposed to be installed is
+test:
+  stage: test
+  script:
+    - docker pull $COMMIT_IMAGE
+    - docker run -i $COMMIT_IMAGE /bin/sh -c 'docker --version'
