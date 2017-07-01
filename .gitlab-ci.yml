@@ -9,10 +9,12 @@ services:
 
 variables:
   COMMIT_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH:$CI_COMMIT_SHA
+  TAGGED_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH:$CI_COMMIT_TAG
 
 stages:
   - build
   - test
+  - release
 
 # Log in to Gitlab's docker registry
 before_script:
@@ -32,3 +34,25 @@ test:
   script:
     - docker pull $COMMIT_IMAGE
     - docker run -i $COMMIT_IMAGE /bin/sh -c 'docker --version'
+
+# If the build is on the master branch then according to our contribution
+# guides for docker images it should have a tag
+release:
+  stage: release
+  script:
+    - docker pull $COMMIT_IMAGE
+    - docker tag $COMMIT_IMAGE $TAGGED_IMAGE
+    - docker push $TAGGED_IMAGE
+  only:
+    - master
+
+# If the build is on the master branch then we should update the github
+# repo too.
+github_release:
+  stage: release
+  script:
+    - echo "Release to Github."
+    - git remote add github https://admin-sjcp:${GITHUB_TOKEN}@github.com/sjcp-solutions/docker-pipeline.git
+    - git push github master
+  only:
+    - master

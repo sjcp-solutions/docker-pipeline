@@ -16,3 +16,11 @@ Set the following rules:
 * Prevent committing secrets to Git
 * Branch name: `(master|develop|feature|release)\/*`
 * Commit author's email: `@sjcp-solutions.com$`
+
+## GitHub Deployment
+
+### Github Repository
+* Create a GitHub repository mirroring the same name as the Gitlab repo.
+* Create a personal token on GitHub allowing the user to push to the repository.
+* Add the personal token as a protected environment variable for the pipeline called `GITHUB_TOKEN`
+
