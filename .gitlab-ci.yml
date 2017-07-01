@@ -44,7 +44,7 @@ release:
     - docker tag $COMMIT_IMAGE $TAGGED_IMAGE
     - docker push $TAGGED_IMAGE
   only:
-    - master
+    - tags
 
 # If the build is on the master branch then we should update the github
 # repo too.
@@ -55,4 +55,4 @@ github_release:
     - git remote add github https://admin-sjcp:${GITHUB_TOKEN}@github.com/sjcp-solutions/docker-pipeline.git
     - git push github master
   only:
-    - master
+    - tags
