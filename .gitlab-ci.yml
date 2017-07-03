@@ -52,7 +52,7 @@ github_release:
   stage: release
   script:
     - echo "Release to Github."
-    - git remote add github https://admin-sjcp:${GITHUB_TOKEN}@github.com/sjcp-solutions/docker-pipeline.git
-    - git push github master
+    - git remote add github "https://admin-sjcp:${GITHUB_TOKEN}@github.com/sjcp-solutions/docker-pipeline.git"
+    - git push github master --follow-tags
   only:
     - tags
