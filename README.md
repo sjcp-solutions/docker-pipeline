@@ -28,3 +28,5 @@ Set the following rules:
 * Create a GitHub repository mirroring the same name as the Gitlab repo.
 * Create a personal token on GitHub allowing the user to push to the repository.
 * Add the personal token as a protected environment variable for the pipeline called `GITHUB_TOKEN`
+* Goto *Travis-ci.org* and link the repository allowing for CI
+* Set the settings to only build if `.travis.yml` is present
