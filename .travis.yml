@@ -1,16 +1,12 @@
-sudo: required
-
-language: python
-
-services:
-  - docker
-
-env:
-- IMAGE_NAME=docker-pipeline
-- RELEASE_URL=https://registry.hub.docker.com/u/stevencooney/docker-test/trigger/$DOCKER_HUB_TOKEN/
+sudo: true
+dist: trusty
 
 before_install:
   - docker --version
+
+env:
+  - IMAGE_NAME: docker-pipeline
+    RELEASE_URL: https://registry.hub.docker.com/u/stevencooney/docker-test/trigger/$DOCKER_HUB_TOKEN/
 
 jobs:
   include:
@@ -18,6 +14,6 @@ jobs:
       script:
       - docker build --pull -t $IMAGE_NAME .
       - docker images
-    - stage: test
+    - stage: test docker image
       script: docker run -i $IMAGE_NAME /bin/sh -c 'docker --version'
     - script: docker run -i $IMAGE_NAME /bin/sh -c 'docker --version'
