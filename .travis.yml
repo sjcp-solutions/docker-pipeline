@@ -17,10 +17,13 @@ jobs:
       - docker images
       # Test docker image
       - docker run -i $IMAGE_NAME /bin/sh -c 'docker --version'
-    - stage: release image to DockerHub
-      script:
-      - echo \{\"source_type\":\"Tag\",\"source_name\":\"\$TRAVIS_TAG\"\} > tag-template.json
-      - envsubst < tag-template.json > tag-body.json
-      - 'curl -X POST -H "Content-Type: application/json" -d "@./tag-body.json" "$RELEASE_URL"'
-      on:
-       tags: true
+    - stage: DockerHub Release
+      script: echo "Deploying to DockerHub"
+      deploy:
+        provider: script
+        script: 
+        - echo \{\"source_type\":\"Tag\",\"source_name\":\"\$TRAVIS_TAG\"\} > tag-template.json
+        - envsubst < tag-template.json > tag-body.json
+        - 'curl -X POST -H "Content-Type: application/json" -d "@./tag-body.json" "$RELEASE_URL"'
+        on:
+          tags: true
