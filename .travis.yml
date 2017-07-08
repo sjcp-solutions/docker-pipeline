@@ -21,7 +21,7 @@ jobs:
       script: echo "Deploying to DockerHub"
       deploy:
         provider: script
-        script: echo \{\"source_type\":\"Tag\",\"source_name\":\"\$TRAVIS_TAG\"\} > tag-template.json && envsubst < tag-template.json > tag-body.json && 'curl -X POST -H "Content-Type: application/json" -d "@./tag-body.json" "$RELEASE_URL"'
+        script: 'echo \{\"source_type\":\"Tag\",\"source_name\":\"\$TRAVIS_TAG\"\} > tag-template.json' && 'envsubst < tag-template.json > tag-body.json' && 'curl -X POST -H "Content-Type: application/json" -d "@./tag-body.json" "$RELEASE_URL"'
         skip_cleanup: true
         on:
           tags: true
