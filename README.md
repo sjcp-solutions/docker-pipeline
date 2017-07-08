@@ -3,6 +3,8 @@
 This repository shows the procedure for developing docker images within gitlab.
 Once the image has been developed it will be released to github and docker hub.
 
+[![Build Status](https://travis-ci.org/sjcp-solutions/docker-pipeline.svg?branch=master)](https://travis-ci.org/sjcp-solutions/docker-pipeline)
+
 ## Gitlab Development
 
 ### Gitlab General Settings

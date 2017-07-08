@@ -6,7 +6,7 @@ before_install:
 
 env:
   - IMAGE_NAME: docker-pipeline
-    RELEASE_URL: https://registry.hub.docker.com/u/stevencooney/docker-test/trigger/$DOCKER_HUB_TOKEN/
+    RELEASE_URL: https://registry.hub.docker.com/u/sjcp/docker-pipeline/trigger/$DOCKER_HUB_TOKEN/
 
 jobs:
   include:
@@ -17,3 +17,10 @@ jobs:
       - docker images
       # Test docker image
       - docker run -i $IMAGE_NAME /bin/sh -c 'docker --version'
+    - stage: release image to DockerHub
+      script:
+      - echo \{\"source_type\":\"Tag\",\"source_name\":\"\$TRAVIS_TAG\"\} > tag-template.json
+      - envsubst < tag-template.json > tag-body.json
+      - 'curl -X POST -H "Content-Type: application/json" -d "@./tag-body.json" "$RELEASE_URL"'
+      on:
+       tags: true
