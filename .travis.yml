@@ -12,18 +12,20 @@ jobs:
   include:
     - stage: build & test docker image
       script:
-      # Build docker image
-      - docker build --pull -t $IMAGE_NAME .
-      - docker images
-      # Test docker image
-      - docker run -i $IMAGE_NAME /bin/sh -c 'docker --version'
+        # Build docker image
+        - docker build --pull -t $IMAGE_NAME .
+        - docker images
+        # Test docker image
+        - docker run -i $IMAGE_NAME /bin/sh -c 'docker --version'
     - stage: DockerHub Release
       script: echo "Deploying to DockerHub"
       deploy:
         provider: script
         script: 
-        - echo \{\"source_type\":\"Tag\",\"source_name\":\"\$TRAVIS_TAG\"\} > tag-template.json
-        - envsubst < tag-template.json > tag-body.json
-        - 'curl -X POST -H "Content-Type: application/json" -d "@./tag-body.json" "$RELEASE_URL"'
+          - echo \{\"source_type\":\"Tag\",\"source_name\":\"\$TRAVIS_TAG\"\} > tag-template.json
+          - envsubst < tag-template.json > tag-body.json
+          - 'curl -X POST -H "Content-Type: application/json" -d "@./tag-body.json" "$RELEASE_URL"'
+        skip_cleanup: true
         on:
           tags: true
+        
