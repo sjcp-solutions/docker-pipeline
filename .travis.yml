@@ -10,10 +10,10 @@ env:
 
 jobs:
   include:
-    - stage: build docker image
+    - stage: build & test docker image
       script:
+      # Build docker image
       - docker build --pull -t $IMAGE_NAME .
       - docker images
-    - stage: test docker image
-      script: docker run -i $IMAGE_NAME /bin/sh -c 'docker --version'
-    - script: docker run -i $IMAGE_NAME /bin/sh -c 'docker --version'
+      # Test docker image
+      - docker run -i $IMAGE_NAME /bin/sh -c 'docker --version'
